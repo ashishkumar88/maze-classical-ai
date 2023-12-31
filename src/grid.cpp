@@ -185,5 +185,131 @@ namespace maze
                 col_ctr++;
             }
         }
+
+        vector<pair<int, int>> Grid::findPathToAndOutOfRoom() const
+        {
+            vector<pair<int, int>> path;
+
+            if(!is_initialized)
+            {
+                cerr << "Grid map is not initialized." << endl;
+                return path;
+            }
+            else if(grid_map.empty())
+            {
+                cerr << "Grid map is empty." << endl;
+                return path;
+            }
+            else
+            {
+                int number_rows = grid_map.size();
+                int number_cols = grid_map[0].size();
+
+                for(int row_index = 0; row_index < number_rows; row_index++)
+                {
+                    int col_index = searchARowForEmptySpace(row_index); // entrance cell may have been found
+                    
+                    if(col_index != Constants::INDEX_NOT_FOUND)
+                    {   
+                        // make sure that the room is valid, see assumptions in the README.md file
+                        if(row_index + 1 < number_rows && grid_map[row_index + 1][col_index] == 0 && col_index + 1 < number_cols && grid_map[row_index][col_index + 1] == 0)
+                        {
+                            cerr << "Invalid room." << endl;
+                            return {};
+                        }
+
+                        cout << "Found empty space at row " << row_index + 1 << " and column " << col_index + 1 << endl;
+
+                        if(row_index + 1 < number_rows && grid_map[row_index + 1][col_index] == 0)
+                        {
+                            // room found below
+                            path.clear();
+                            path.push_back(make_pair(row_index, col_index));
+                            performColumnWalk(path, row_index + 1, col_index);
+
+                            if(path.size() > 2)
+                            {
+                                auto last_element = path.back();
+                                performRowWalk(path, last_element.first, last_element.second + 1);
+
+                                // check if the last is outside the room
+                                last_element = path.back();
+                                if((last_element.first + 1 < number_rows && grid_map[last_element.first + 1][last_element.second] == 1 && grid_map[last_element.first - 1][last_element.second] == 1)
+                                    || (last_element.first + 1 == number_rows && grid_map[last_element.first - 1][last_element.second] == 1)
+                                )
+                                {
+                                    // this is exit
+                                    return path;
+                                }
+                                else if((grid_map[last_element.first - 1][last_element.second] == 0)
+                                    && (last_element.first + 1 < number_rows && grid_map[last_element.first + 1][last_element.second] == 0))
+                                {
+                                    // add the exit
+                                    path.push_back(make_pair(last_element.first + 1, last_element.second));
+                                    return path;
+                                }
+                                else
+                                {                                
+                                    cerr << "Invalid room." << endl;
+                                    return {};
+                                }
+                            }
+                            else
+                            {                                
+                                cerr << "Invalid room. Must be atleast 2 cells wide." << endl; // See assumption in the README.md file  
+                                return {};
+                            }
+                        }
+                        else if(col_index + 1 < number_cols && grid_map[row_index][col_index + 1] == 0)
+                        {
+                            // room found to the right
+                            path.clear();
+                            path.push_back(make_pair(row_index, col_index));
+                            performRowWalk(path, row_index, col_index + 1);
+
+                            if(path.size() > 2)
+                            {
+                                auto last_element = path.back();
+                                performColumnWalk(path, last_element.first + 1, last_element.second);
+
+                                // check if the last is outside the room
+                                last_element = path.back();
+                                if((last_element.second + 1 < number_cols && grid_map[last_element.first][last_element.second + 1] == 1 && grid_map[last_element.first][last_element.second - 1] == 1)
+                                    || (last_element.second + 1 == number_cols && grid_map[last_element.first][last_element.second - 1] == 1)
+                                )
+                                {
+                                    // this is exit
+                                    return path;
+                                }
+                                else if((grid_map[last_element.first][last_element.second - 1] == 0)
+                                    && (last_element.second + 1 < number_cols && grid_map[last_element.first][last_element.second + 1] == 0))
+                                {
+                                    // add the exit
+                                    path.push_back(make_pair(last_element.first, last_element.second + 1));
+                                    return path;
+                                }
+                                else
+                                {                                
+                                    cerr << "Invalid room." << endl;
+                                    return {};
+                                }
+                            }
+                            else
+                            {
+                                cerr << "Invalid room. Must be atleast 2 cells wide." << endl; // See assumption in the README.md file  
+                                return {};
+                            }
+                        }
+                        else
+                        {
+                            cerr << "No room found." << endl;
+                            return {};
+                        }
+                    }
+                }
+            }
+
+            return path; // TODO: Explore using graph search algorithms 
+        }
     }
 }

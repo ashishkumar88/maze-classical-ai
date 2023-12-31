@@ -65,6 +65,11 @@ namespace maze
                 // of integers. Each pair represents a cell in the grid map
                 // that is part of the hallway
                 std::vector<std::pair<int, int>> walkThrouhHallway() const;
+                
+                // findPathToAndOutOfRoom function that returns a vector of pairs
+                // of integers. Each pair represents a cell in the grid map
+                // that is part of the path into and out of the room in the maze.
+                std::vector<std::pair<int, int>> findPathToAndOutOfRoom() const;
 
             private:
                 std::vector<std::vector<int>> grid_map;

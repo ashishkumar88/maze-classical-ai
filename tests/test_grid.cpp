@@ -188,6 +188,103 @@ TEST(GridTest, HallwayWalk6)
     ASSERT_EQ(hallway[7].second, 7);
 }
 
+// Test search on map file with multiple rows and invalid room in a maze
+TEST(GridTest, RoomPath1)
+{
+    string map_file_path = "maps/invalid_room_1.txt";
+    maze::grid::Grid grid(map_file_path);
+    auto path = grid.findPathToAndOutOfRoom();
+    ASSERT_EQ(path.size(), 0);
+}
+
+// Test search on map file with multiple rows and invalid room in a maze
+TEST(GridTest, RoomPath2)
+{
+    string map_file_path = "maps/invalid_room_2.txt";
+    maze::grid::Grid grid(map_file_path);
+    auto path = grid.findPathToAndOutOfRoom();
+    ASSERT_EQ(path.size(), 0);
+}
+
+// Test search on map file with multiple rows and valid room in a maze
+TEST(GridTest, RoomPath3)
+{
+    string map_file_path = "maps/room_maze_1.txt";
+    maze::grid::Grid grid(map_file_path);
+    auto path = grid.findPathToAndOutOfRoom();
+    ASSERT_EQ(path.size(), 7);
+    ASSERT_EQ(path[0].first, 0);
+    ASSERT_EQ(path[0].second, 1);
+    ASSERT_EQ(path[6].first, 3);
+    ASSERT_EQ(path[6].second, 4);
+}
+
+// Test search on map file with multiple rows and valid room in a maze
+TEST(GridTest, RoomPath4)
+{
+    string map_file_path = "maps/room_maze_2.txt";
+    maze::grid::Grid grid(map_file_path);
+    auto path = grid.findPathToAndOutOfRoom();
+    ASSERT_EQ(path.size(), 7);
+    ASSERT_EQ(path[0].first, 0);
+    ASSERT_EQ(path[0].second, 1);
+    ASSERT_EQ(path[6].first, 2);
+    ASSERT_EQ(path[6].second, 5);
+}
+
+// Test search on map file with multiple rows and valid room in a maze
+TEST(GridTest, RoomPath5)
+{
+    string map_file_path = "maps/room_maze_3.txt";
+    maze::grid::Grid grid(map_file_path);
+    auto path = grid.findPathToAndOutOfRoom();
+    ASSERT_EQ(path.size(), 7);
+    ASSERT_EQ(path[0].first, 1);
+    ASSERT_EQ(path[0].second, 0);
+    ASSERT_EQ(path[6].first, 3);
+    ASSERT_EQ(path[6].second, 4);
+}
+
+// Test search on map file with multiple rows and valid room in a maze
+TEST(GridTest, RoomPath6)
+{
+    string map_file_path = "maps/room_maze_4.txt";
+    maze::grid::Grid grid(map_file_path);
+    auto path = grid.findPathToAndOutOfRoom();
+    ASSERT_EQ(path.size(), 9);
+    ASSERT_EQ(path[0].first, 1);
+    ASSERT_EQ(path[0].second, 0);
+    ASSERT_EQ(path[8].first, 5);
+    ASSERT_EQ(path[8].second, 4);
+}
+
+// Test search on map file with multiple rows and room without exit
+TEST(GridTest, RoomPath7)
+{
+    string map_file_path = "maps/room_maze_5.txt";
+    maze::grid::Grid grid(map_file_path);
+    auto path = grid.findPathToAndOutOfRoom();
+    ASSERT_EQ(path.size(), 0);
+}
+
+// Test search on map file with multiple rows and room with invalid exits
+TEST(GridTest, RoomPath8)
+{
+    string map_file_path = "maps/room_maze_6.txt";
+    maze::grid::Grid grid(map_file_path);
+    auto path = grid.findPathToAndOutOfRoom();
+    ASSERT_EQ(path.size(), 0);
+}
+
+// Test search on map file with multiple rows and room with invalid exits
+TEST(GridTest, RoomPath9)
+{
+    string map_file_path = "maps/room_maze_7.txt";
+    maze::grid::Grid grid(map_file_path);
+    auto path = grid.findPathToAndOutOfRoom();
+    ASSERT_EQ(path.size(), 0);
+}
+
 int main(int ac, char* av[]) {
     testing::InitGoogleTest(&ac, av);    
     return RUN_ALL_TESTS();

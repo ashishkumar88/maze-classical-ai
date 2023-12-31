@@ -10,6 +10,8 @@ The technical challenge present various user stories that need to be solved. The
     - Assumptions - The Maze is either a 1D or a 2D maze. The program is expected to return the *first* empty space in a row if multiple empty spaces exist.
 - User Story 2 - The requirement is to walk through a hallway in a hallway maze. The first scenario is when a column is a hallway. The walk is performed by finding a cell from the first row that is empty and marking it as a start cell. Futhermore, walk through that column until a wall is hit. The second scenario is when a row is a hallway. The walk is performed by finding a cell from the first column that is empty and marking it as a start cell. Futhermore, walk through that row until a wall is hit.
     - Assumptions - The Maze is either a 1D or a 2D maze. A *hallway* maze that contains either a single row hallway with empty spaces or a single column hallway with empty spaces. Provided maze contains only one hallway. The program does not work on multiple hallways.
+- User Story 3 - The requirement is to find a way into a rectangular room and a way out of it. The program find a path into this rectangular room and out of it by reusing the methods implemented for the previous use story. 
+    - Assumptions - The Maze is a 2D maze. A *room* is a rectangular composition of cells which are empty and is atleast two cells wide. A room always has an empty cell or door outside of it and adjacent to the top left corner and another empty cell or door adjacent to a bottom right corner. The program assumses that maze has **only one** room. The program does not provide paths for multiple rooms.
 
 ### Project Structure
 
@@ -188,8 +190,14 @@ First empty space in row 1 is at column 2
 
 - User Story 2
 ```
-./build/bin/MazeSolver -m path/to/maze/file # or -u 2
+./build/bin/MazeSolver -m path/to/maze/file -u 2
 Path Start -> (0, 3) -> (1, 3) -> (2, 3) -> (3, 3) -> (4, 3) -> (5, 3) -> End
+```
+
+- User Story 3
+```
+./build/bin/MazeSolver -m path/to/maze/file # or -u 3
+Path Start -> (0, 1) -> (1, 1) -> (2, 1) -> (2, 2) -> (2, 3) -> (2, 4) -> (3, 4) -> End
 ```
 
 ### License

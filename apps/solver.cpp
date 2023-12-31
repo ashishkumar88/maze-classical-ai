@@ -23,6 +23,16 @@
 
 using namespace std;
 
+void printPath(vector<pair<int, int>> const& path)
+{
+    cout << "Path Start -> ";
+    for(auto const& p : path)
+    {
+        cout << "(" << p.first << ", " << p.second << ")" << " -> ";
+    }
+    cout << "End" << endl;
+}
+
 int main(int argc, char** argv) 
 {
     if(argc < 2)
@@ -32,7 +42,7 @@ int main(int argc, char** argv)
     }
     else
     {
-        int user_story_id = 2;
+        int user_story_id = 3;
         int col_index = -1;
         string map_file = "";
 
@@ -42,7 +52,7 @@ int main(int argc, char** argv)
                 map_file = argv[i+1];
             } else if (flag.compare(string("-u")) == 0 && i + 1 < argc) {
                 int value_provided = stoi(argv[i + 1]);
-                if(value_provided >= 1 && value_provided < 5)
+                if(value_provided >= 1 && value_provided <= 5)
                 {
                     user_story_id = value_provided;
                 }
@@ -71,12 +81,7 @@ int main(int argc, char** argv)
                     auto path = grid.walkThrouhHallway();
                     if(path.size() > 0)
                     {
-                        cout << "Path Start -> ";
-                        for(auto const& p : path)
-                        {
-                            cout << "(" << p.first << ", " << p.second << ")" << " -> ";
-                        }
-                        cout << "End" << endl;
+                        printPath(path);
                     }
                     else
                     {
@@ -85,9 +90,23 @@ int main(int argc, char** argv)
                     break;
                 }
             case 3:
-                cout << "Not implemented yet." << endl;
+                {
+                    auto path = grid.findPathToAndOutOfRoom();
+                    if(path.size() > 0)
+                    {
+                        printPath(path);
+                    }
+                    else
+                    {
+                        cout << "No path found or an error occured." << endl;
+                    }
+                    break;
+                }
                 break;
             case 4:
+                cout << "Not implemented yet." << endl;
+                break;
+            case 5:
                 cout << "Not implemented yet." << endl;
                 break;
             default:
