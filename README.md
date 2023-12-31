@@ -8,7 +8,8 @@ The technical challenge present various user stories that need to be solved. The
 
 - User Story 1 - The requirement is to find an empty space in a single row. This is performed by performing a linear search on a row.
     - Assumptions - The Maze is either a 1D or a 2D maze. The program is expected to return the *first* empty space in a row if multiple empty spaces exist.
-
+- User Story 2 - The requirement is to walk through a hallway in a hallway maze. The first scenario is when a column is a hallway. The walk is performed by finding a cell from the first row that is empty and marking it as a start cell. Futhermore, walk through that column until a wall is hit. The second scenario is when a row is a hallway. The walk is performed by finding a cell from the first column that is empty and marking it as a start cell. Futhermore, walk through that row until a wall is hit.
+    - Assumptions - The Maze is either a 1D or a 2D maze. A *hallway* maze that contains either a single row hallway with empty spaces or a single column hallway with empty spaces. Provided maze contains only one hallway. The program does not work on multiple hallways.
 
 ### Project Structure
 
@@ -76,7 +77,7 @@ Expected output is below:
     -- Found Threads: TRUE
     -- Configuring done
     -- Generating done
-    -- Build files have been written to: /home/ashish/build/build
+    -- Build files have been written to: /home/ashish/build
     Scanning dependencies of target MazeSolverLib
     [  6%] Building CXX object src/CMakeFiles/MazeSolverLib.dir/grid.cpp.o
     [ 12%] Building CXX object src/CMakeFiles/MazeSolverLib.dir/graph.cpp.o
@@ -107,9 +108,9 @@ Expected output is below:
     [ 93%] Building CXX object tests/CMakeFiles/test_grid.dir/test_grid.cpp.o
     [100%] Linking CXX executable ../bin/test_grid
     Run grid tests
-    [==========] Running 10 tests from 1 test suite.
+    [==========] Running 16 tests from 1 test suite.
     [----------] Global test environment set-up.
-    [----------] 10 tests from GridTest
+    [----------] 16 tests from GridTest
     [ RUN      ] GridTest.Constructor
     [       OK ] GridTest.Constructor (0 ms)
     [ RUN      ] GridTest.Constructor2
@@ -137,13 +138,25 @@ Expected output is below:
     Invalid map file : "maps/multiple_rows_2.txt"
     Invalid map file.
     [       OK ] GridTest.SearchARowForEmptySpace5 (0 ms)
-    [----------] 10 tests from GridTest (0 ms total)
+    [ RUN      ] GridTest.HallwayWalk1
+    [       OK ] GridTest.HallwayWalk1 (0 ms)
+    [ RUN      ] GridTest.HallwayWalk2
+    [       OK ] GridTest.HallwayWalk2 (0 ms)
+    [ RUN      ] GridTest.HallwayWalk3
+    [       OK ] GridTest.HallwayWalk3 (0 ms)
+    [ RUN      ] GridTest.HallwayWalk4
+    [       OK ] GridTest.HallwayWalk4 (0 ms)
+    [ RUN      ] GridTest.HallwayWalk5
+    [       OK ] GridTest.HallwayWalk5 (0 ms)
+    [ RUN      ] GridTest.HallwayWalk6
+    [       OK ] GridTest.HallwayWalk6 (0 ms)
+    [----------] 16 tests from GridTest (0 ms total)
 
     [----------] Global test environment tear-down
-    [==========] 10 tests from 1 test suite ran. (0 ms total)
-    [  PASSED  ] 10 tests.
+    [==========] 16 tests from 1 test suite ran. (0 ms total)
+    [  PASSED  ] 16 tests.
     [100%] Built target test_grid
-    /home/ashish/build
+    /home/ashish
     Build complete
     ```
 </details>
@@ -171,6 +184,12 @@ The `MazeSolver` executable requires path to the maze file. Optionally, a user s
 ```
 ./build/bin/MazeSolver -m path/to/maze/file -u 1
 First empty space in row 1 is at column 2
+```
+
+- User Story 2
+```
+./build/bin/MazeSolver -m path/to/maze/file # or -u 2
+Path Start -> (0, 3) -> (1, 3) -> (2, 3) -> (3, 3) -> (4, 3) -> (5, 3) -> End
 ```
 
 ### License

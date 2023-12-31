@@ -113,6 +113,81 @@ TEST(GridTest, SearchARowForEmptySpace5)
     ASSERT_FALSE(grid.isInitialized());
 }
 
+// Test search on map file with multiple rows and invalid hallway maze
+TEST(GridTest, HallwayWalk1)
+{
+    string map_file_path = "maps/invalid_hallway_maze.txt";
+    maze::grid::Grid grid(map_file_path);
+    auto hallway = grid.walkThrouhHallway();
+    ASSERT_EQ(hallway.size(), 0);
+}
+
+// Test search on map file with multiple rows and valid hallway maze with column hallway
+TEST(GridTest, HallwayWalk2)
+{
+    string map_file_path = "maps/hallway_maze_1.txt";
+    maze::grid::Grid grid(map_file_path);
+    auto hallway = grid.walkThrouhHallway();
+    ASSERT_EQ(hallway.size(), 6);
+    ASSERT_EQ(hallway[0].first, 0);
+    ASSERT_EQ(hallway[0].second, 3);
+    ASSERT_EQ(hallway[hallway.size() - 1].first, 5);
+    ASSERT_EQ(hallway[hallway.size() - 1].second, 3);
+}
+
+
+// Test search on map file with multiple rows and valid hallway maze with column hallway
+TEST(GridTest, HallwayWalk3)
+{
+    string map_file_path = "maps/hallway_maze_2.txt";
+    maze::grid::Grid grid(map_file_path);
+    auto hallway = grid.walkThrouhHallway();
+    ASSERT_EQ(hallway.size(), 5);
+    ASSERT_EQ(hallway[0].first, 1);
+    ASSERT_EQ(hallway[0].second, 3);
+    ASSERT_EQ(hallway[4].first, 5);
+    ASSERT_EQ(hallway[4].second, 3);
+}
+
+// Test search on map file with multiple rows and valid hallway maze with column hallway
+TEST(GridTest, HallwayWalk4)
+{
+    string map_file_path = "maps/hallway_maze_3.txt";
+    maze::grid::Grid grid(map_file_path);
+    auto hallway = grid.walkThrouhHallway();
+    ASSERT_EQ(hallway.size(), 5);
+    ASSERT_EQ(hallway[0].first, 0);
+    ASSERT_EQ(hallway[0].second, 3);
+    ASSERT_EQ(hallway[4].first, 4);
+    ASSERT_EQ(hallway[4].second, 3);
+}
+
+// Test search on map file with multiple rows and valid hallway maze with row hallway
+TEST(GridTest, HallwayWalk5)
+{
+    string map_file_path = "maps/hallway_maze_4.txt";
+    maze::grid::Grid grid(map_file_path);
+    auto hallway = grid.walkThrouhHallway();
+    ASSERT_EQ(hallway.size(), 9);
+    ASSERT_EQ(hallway[0].first, 4);
+    ASSERT_EQ(hallway[0].second, 0);
+    ASSERT_EQ(hallway[hallway.size() - 1].first, 4);
+    ASSERT_EQ(hallway[hallway.size() - 1].second, 8);
+}
+
+// Test search on map file with multiple rows and valid hallway maze with row hallway
+TEST(GridTest, HallwayWalk6)
+{
+    string map_file_path = "maps/hallway_maze_5.txt";
+    maze::grid::Grid grid(map_file_path);
+    auto hallway = grid.walkThrouhHallway();
+    ASSERT_EQ(hallway.size(), 8);
+    ASSERT_EQ(hallway[0].first, 4);
+    ASSERT_EQ(hallway[0].second, 0);
+    ASSERT_EQ(hallway[7].first, 4);
+    ASSERT_EQ(hallway[7].second, 7);
+}
+
 int main(int ac, char* av[]) {
     testing::InitGoogleTest(&ac, av);    
     return RUN_ALL_TESTS();

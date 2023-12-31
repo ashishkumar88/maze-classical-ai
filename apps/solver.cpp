@@ -32,7 +32,7 @@ int main(int argc, char** argv)
     }
     else
     {
-        int user_story_id = 1;
+        int user_story_id = 2;
         int col_index = -1;
         string map_file = "";
 
@@ -54,27 +54,44 @@ int main(int argc, char** argv)
 
         switch (user_story_id)
         {
-        case 1:
-            if(int col_index = grid.searchARowForEmptySpace(0); col_index != maze::grid::Constants::INDEX_NOT_FOUND)
-            {
-                cout << "First empty space in row " << 1 << " is at column " << col_index + 1 << endl;
-            }
-            else
-            {
-                cout << "No empty space in row #"<< 1 <<" or an error occured." << endl;
-            }
-            break;
-        case 2:
-            cout << "Not implemented yet." << endl;
-            break;
-        case 3:
-            cout << "Not implemented yet." << endl;
-            break;
-        case 4:
-            cout << "Not implemented yet." << endl;
-            break;
-        default:
-            break;
+            case 1:
+                {
+                    if(int col_index = grid.searchARowForEmptySpace(0); col_index != maze::grid::Constants::INDEX_NOT_FOUND)
+                    {
+                        cout << "First empty space in row " << 1 << " is at column " << col_index + 1 << endl;
+                    }
+                    else
+                    {
+                        cout << "No empty space in row #"<< 1 <<" or an error occured." << endl;
+                    }
+                    break;
+                }
+            case 2:
+                {
+                    auto path = grid.walkThrouhHallway();
+                    if(path.size() > 0)
+                    {
+                        cout << "Path Start -> ";
+                        for(auto const& p : path)
+                        {
+                            cout << "(" << p.first << ", " << p.second << ")" << " -> ";
+                        }
+                        cout << "End" << endl;
+                    }
+                    else
+                    {
+                        cout << "No path found or an error occured." << endl;
+                    }
+                    break;
+                }
+            case 3:
+                cout << "Not implemented yet." << endl;
+                break;
+            case 4:
+                cout << "Not implemented yet." << endl;
+                break;
+            default:
+                break;
         }
     }
     return 0;

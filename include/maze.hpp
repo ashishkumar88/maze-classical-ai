@@ -61,9 +61,22 @@ namespace maze
                 // is initialized, false otherwise
                 const bool& isInitialized() const;
 
+                // walkThrouhHallway function that returns a vector of pairs
+                // of integers. Each pair represents a cell in the grid map
+                // that is part of the hallway
+                std::vector<std::pair<int, int>> walkThrouhHallway() const;
+
             private:
                 std::vector<std::vector<int>> grid_map;
                 bool is_initialized;
+
+                // performColumnWalk function that performs a column walk
+                // in a hallway, starting from the given row and column index
+                void performColumnWalk(std::vector<std::pair<int, int>>& hallway_cells, const int& row_index, const int& col_index) const;
+                
+                // performRowWalk function that performs a row walk
+                // in a hallway, starting from the given row and column index
+                void performRowWalk(std::vector<std::pair<int, int>>& hallway_cells, const int& row_index, const int& col_index) const;
         };
     }
 }

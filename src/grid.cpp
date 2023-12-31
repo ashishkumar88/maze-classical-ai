@@ -106,5 +106,84 @@ namespace maze
 
             return Constants::INDEX_NOT_FOUND;
         }
+
+        vector<pair<int, int>> Grid::walkThrouhHallway() const
+        {
+            vector<pair<int, int>> hallway_cells;
+
+            if(!is_initialized)
+            {
+                cerr << "Grid map is not initialized." << endl;
+                return hallway_cells;
+            }
+            else if(grid_map.empty())
+            {
+                cerr << "Grid map is empty." << endl;
+                return hallway_cells;
+            }
+            else
+            {
+                int number_rows = grid_map.size();
+                int number_cols = grid_map[0].size();
+
+                for(int row_index = 0; row_index < number_rows; row_index++)
+                {
+                    int col_index = searchARowForEmptySpace(row_index);
+                    if(col_index != Constants::INDEX_NOT_FOUND)
+                    {
+                        if(row_index + 1 < number_rows && grid_map[row_index + 1][col_index] == 0)
+                        {
+                            // column hallway found
+                            performColumnWalk(hallway_cells, row_index, col_index);
+
+                            return hallway_cells;
+                        }
+                        else if(col_index + 1 < number_cols && grid_map[row_index][col_index + 1] == 0)
+                        {
+                            // row hallway found
+                            performRowWalk(hallway_cells, row_index, col_index);
+                            
+                            return hallway_cells;
+                        }
+                        else
+                        {
+                            // just one cell
+                            hallway_cells.push_back(make_pair(row_index, col_index));
+                            return hallway_cells;
+                        }
+                    }
+                }
+            }
+
+            return hallway_cells;
+        }
+
+        void Grid::performColumnWalk(vector<pair<int, int>>& hallway_cells, const int& row_index, const int& col_index) const
+        {
+            int number_rows = grid_map.size();
+            int number_cols = grid_map[0].size();
+
+            hallway_cells.push_back(make_pair(row_index, col_index));
+            int row_ctr = row_index + 1;
+            while(row_ctr < number_rows && grid_map[row_ctr][col_index] == 0)
+            {
+                hallway_cells.push_back(make_pair(row_ctr, col_index));
+                row_ctr++;
+            }
+        }
+
+        void Grid::performRowWalk(vector<pair<int, int>>& hallway_cells, const int& row_index, const int& col_index) const
+        {
+            int number_rows = grid_map.size();
+            int number_cols = grid_map[0].size();
+
+            hallway_cells.push_back(make_pair(row_index, col_index));
+            int col_ctr = col_index + 1;
+            while(col_ctr < number_cols && grid_map[row_index][col_ctr] == 0)
+            {
+                hallway_cells.push_back(make_pair(row_index, col_ctr));
+                col_ctr++;
+            }
+        }
     }
 }
