@@ -14,6 +14,9 @@ The technical challenge present various user stories that need to be solved. The
     - Assumptions - The Maze is a 2D maze. A *room* is a rectangular composition of cells which are empty and is atleast two cells wide. A room always has an empty cell or door outside of it and adjacent to the top left corner and another empty cell or door adjacent to a bottom right corner. The program assumses that maze has **only one** room. The program does not provide paths for multiple rooms.
 - User Story 4 - The requirement is to find a winding path if it exists in a maze. The program find a path into a winding path and out of it. This is solved by using a graph algorithm called depth first search or DFS. The program finds the start of the winding path and then follows it.
     - Assumptions - The Maze is a 2D maze. A *winding path* does not contain forks, that is, a cell never creates two subpaths. The program assumses that maze has **only one** winding path and each path is exactly **one** cell wide. The program does not provide paths for multiple winding paths.
+- User Story 5 - The requirement is to find a winding path if it exists in a maze. The program find a path into a winding path and out of it. This is solved by using a graph algorithm called depth first search or DFS. The program finds the start of the winding path and then follows it.
+    - Assumptions - The Maze is a 2D maze. A *winding path* does not contain forks, that is, a cell never creates two subpaths. The program assumses that maze has **only one** winding path and each path is exactly **one** cell wide. The program does not provide paths for multiple winding paths. Only forward, backward, left and right movements are allowed.
+
 ### Project Structure
 
 The project has the following structure:
@@ -118,11 +121,11 @@ Expected output is below:
     [       OK ] GridTest.Constructor (0 ms)
     [ RUN      ] GridTest.Constructor2
     File does not exist : "maps/does_not_exist.txt"
-    filesystem error: File does not exist.: Success
+    filesystem error: File does not exist.
     [       OK ] GridTest.Constructor2 (0 ms)
     [ RUN      ] GridTest.Constructor3
     File does not exist : ""
-    filesystem error: File does not exist.: Success
+    filesystem error: File does not exist.
     [       OK ] GridTest.Constructor3 (0 ms)
     [ RUN      ] GridTest.Constructor4
     [       OK ] GridTest.Constructor4 (0 ms)
@@ -203,9 +206,117 @@ Path Start -> (0, 1) -> (1, 1) -> (2, 1) -> (2, 2) -> (2, 3) -> (2, 4) -> (3, 4)
 
 - User Story 4
 ```
-./build/bin/MazeSolver -m path/to/maze/file # or -u 4
+./build/bin/MazeSolver -m path/to/maze/file -u 4
 Path Start -> (0, 1) -> (1, 1) -> (1, 2) -> (1, 3) -> (2, 3) -> (3, 3) -> (3, 2) -> (3, 1) -> (4, 1) -> (5, 1) -> (5, 2) -> (5, 3) -> (6, 3) -> End
 ```
+
+- User Story 5
+```
+./build/bin/MazeSolver -m path/to/maze/file # or -u 5
+Path Start -> (0, 1) -> (1, 1) -> (1, 2) -> (1, 3) -> (2, 3) -> (3, 3) -> (3, 2) -> (3, 1) -> (4, 1) -> (5, 1) -> (5, 2) -> (5, 3) -> (6, 3) -> End
+```
+### Reflections/Analysis
+
+#### Analysis Story 1
+Although the maze solver can solve various scenarios, it also makes assumptions which are specified in the first section. The maze solver will not provide multiple paths in case multiple start and/or multiple ends exit. The solver has not been stress tested and may run into performance issues when large mazes are provided. The solution also assumes that only forward, backward, left and right movements are allowed. As diagonal movements are not allowed, the solution will fail in mazes that requires diagonal movements.
+
+#### Analysis Story 2
+I believe the requirement was to come up with a simple solution, however, I implement A star for the User Story 5 as the amount of effort coding effort required to continue with the simple effort and implement a solution seemed to be higher than implementing A star. Now, A star is optimal and complete if the heuristic is admissible and monotonic. Now, the manhattan distance is an admissible heuristic as the manhattan distance is never higher than the lowest possible cost in grids in which forward, backward, left and right movements are allowed. Additionally, the manhattan distance is increasingly monotonic, that is it either increases or stays the same. Hence, the solution is optimal. The worst case time complexity of A star in this case could be that of Djikstra's which is O((M\*N) log(M*N)).
+
+On the programming side, some future work:
+1. Explore a way to use priority queue
+2. Find a way to avoid using an additional map to store child to parent relationship
+3. Find a way to avoid the O(n) search starting at line 287 of graph.cpp
+
+#### Analysis Story 3
+To decompose the problem of navigating a 1x3 "ship" through a maze with the ability to move forward, backward, and rotate around its center of gravity, we can follow an incremental approach similar to that used for simpler maze navigation problems. Here are the steps to break down the problem:
+
+1. User Story 1 -
+Implement the ship's ability to move forward and backward in a row or column hallway in a grid.
+
+2. User Story 2 -
+Enable the ship to rotate around its center of gravity. Ensure that the rotation is accurate and consistent. 
+
+3. User Story 3 -
+Implement the ship entering a room which has enough space to rotate and exit. Implement basic collision detection for the ship. This includes preventing the ship from moving through the maze walls. An example maze could look like below:
+```
+11101111
+11101111
+11101111
+10000001
+10000001
+10000001
+11111011
+11111011
+```
+
+4. User Story 4 - Enhance the ship's movement to allow for more precise control, such as slight adjustments in position. Implement more complex rotation mechanics, allowing the ship to navigate around corners and tight spaces. An exmple maze could look like below:
+```
+11101111
+11101111
+11101111
+10000001
+10000001
+10000001
+11111011
+11111011
+11111011
+11111011
+10000001
+10000001
+10000001
+11101111
+11101111
+11101111
+```
+
+Implementation should treat the following map as invalid:
+```
+11101111
+11101111
+11101111
+10000001
+10000001
+10000001
+11111011
+11111011
+11111011
+11111011
+11100011
+11101111
+11101111
+11101111
+```
+
+5. User Story 5 - Introduce more complex mazes with varied layouts, including tight turns and narrow passages as provided in the problem statement.
+
+##### Solution 
+To solve a maze for a 1xR robot, a collision model shall be developed. A star can still be used with a neighor validation check. Only valid neighbor should be considered for adding to the open list. A neighbor is valid if the 1xR robot can move into it, where a neighbor is an adjacent cell with respect to the center of gravity of the robot. Consider the following map:
+
+```
+11101111
+111R1111
+111R1111
+100R0001
+10000001
+10000001
+```
+In the above example, the center of the gravity is (3, 4), using 1-indexing. (2, 4) and (4, 4) are the only valid neighbors.
+
+Let's consider another example:
+```
+11101111
+11101111
+11101111
+100R0001
+000R0001
+100R0001
+11101111
+11101111
+```
+In the above example, the center of the gravity is (5, 4), using 1-indexing. There are 4 valid neighbors: (4, 4), (6, 4), (5, 3) and (5, 5).
+
+Along with a path, the sequence of actions must also be provided.
 
 ### License
 This program is licensed under GPL 3, license [here](LICENSE.md).

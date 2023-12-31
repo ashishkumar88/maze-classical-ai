@@ -288,7 +288,7 @@ TEST(GridTest, RoomPath9)
 // Test winding path following on map file with multiple rows and invalid winding path
 TEST(GridTest, WindingPath1)
 {
-    string map_file_path = "maps/invalid_winding_path_1.txt";
+    string map_file_path = "maps/invalid_winding_path_maze_1.txt";
     maze::grid::Grid grid(map_file_path);
     auto path = grid.findWindingPath();
     ASSERT_EQ(path.size(), 0);
@@ -318,6 +318,59 @@ TEST(GridTest, WindingPath3)
     ASSERT_EQ(path[0].second, 0);
     ASSERT_EQ(path[41].first, 2);
     ASSERT_EQ(path[41].second, 22);
+}
+
+// Test solving maze on map file with multiple rows and invalid maze
+TEST(GridTest, SolveMaze1)
+{
+    string map_file_path = "maps/invalid_start_end_maze_1.txt";
+    maze::grid::Grid grid(map_file_path);
+    auto path = grid.solveMaze();
+    ASSERT_EQ(path.size(), 0);
+}
+
+// Test solving maze on map file with multiple rows and invalid maze
+TEST(GridTest, SolveMaze2)
+{
+    string map_file_path = "maps/invalid_start_end_maze_2.txt";
+    maze::grid::Grid grid(map_file_path);
+    auto path = grid.solveMaze();
+    ASSERT_EQ(path.size(), 0);
+}
+
+// Test solving maze on map file with multiple rows and invalid maze
+TEST(GridTest, SolveMaze3)
+{
+    string map_file_path = "maps/invalid_start_end_maze_3.txt";
+    maze::grid::Grid grid(map_file_path);
+    auto path = grid.solveMaze();
+    ASSERT_EQ(path.size(), 0);
+}
+
+// Test solving maze on map file with multiple rows and valid maze
+TEST(GridTest, SolveMaze4)
+{
+    string map_file_path = "maps/start_end_maze_1.txt";
+    maze::grid::Grid grid(map_file_path);
+    auto path = grid.solveMaze();
+    ASSERT_EQ(path.size(), 8);
+    ASSERT_EQ(path[0].first, 0);
+    ASSERT_EQ(path[0].second, 1);
+    ASSERT_EQ(path[7].first, 5);
+    ASSERT_EQ(path[7].second, 3);
+}
+
+// Test solving maze on map file with multiple rows and valid maze
+TEST(GridTest, SolveMaze5)
+{
+    string map_file_path = "maps/start_end_maze_2.txt";
+    maze::grid::Grid grid(map_file_path);
+    auto path = grid.solveMaze();
+    ASSERT_EQ(path.size(), 17);
+    ASSERT_EQ(path[0].first, 0);
+    ASSERT_EQ(path[0].second, 1);
+    ASSERT_EQ(path[16].first, 8);
+    ASSERT_EQ(path[16].second, 9);
 }
 
 int main(int ac, char* av[]) {

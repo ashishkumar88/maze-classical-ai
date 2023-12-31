@@ -249,8 +249,6 @@ namespace maze
                             return {};
                         }
 
-                        cout << "Found empty space at row " << row_index + 1 << " and column " << col_index + 1 << endl;
-
                         if(row_index + 1 < number_rows && grid_map[row_index + 1][col_index] == 0)
                         {
                             // room found below
@@ -411,6 +409,93 @@ namespace maze
                 return {};
             }
             
+            return {};
+        }
+
+        vector<pair<int, int>> Grid::solveMaze() const
+        {   
+            vector<pair<int, int>> path;
+
+            if(!is_initialized)
+            {
+                cerr << "Grid map is not initialized." << endl;
+                return {};
+            }
+            else if(grid_map.empty())
+            {
+                cerr << "Grid map is empty." << endl;
+                return {};
+            }
+            else
+            {
+                int number_rows = grid_map.size();
+                int number_cols = grid_map[0].size();
+
+                int start_row_index = -1;
+                int start_col_index = -1;
+
+                // search first row and column for empty space
+                int col_index = searchARowForEmptySpace(0);
+
+                if(col_index == Constants::INDEX_NOT_FOUND)
+                {
+                    int row_index = searchAColumnForEmptySpace(0);
+                    if(row_index != Constants::INDEX_NOT_FOUND)
+                    {
+                        start_row_index = row_index;
+                        start_col_index = 0;
+                    }
+                }
+                else
+                {
+                    start_row_index = 0;
+                    start_col_index = col_index;
+                }
+
+                if(start_row_index == -1 || start_col_index == -1)
+                {
+                    cerr << "Could not find start cell." << endl;
+                    return {};
+                }
+
+                int end_row_index = -1;
+                int end_col_index = -1;
+
+                // search last row and column for empty space
+                col_index = searchARowForEmptySpace(number_rows - 1);
+
+                if(col_index == Constants::INDEX_NOT_FOUND)
+                {
+                    int row_index = searchAColumnForEmptySpace(number_cols - 1);
+                    if(row_index != Constants::INDEX_NOT_FOUND)
+                    {
+                        end_row_index = row_index;
+                        end_col_index = number_cols - 1;
+                    }
+                }
+                else
+                {
+                    end_row_index = number_rows - 1;
+                    end_col_index = col_index;
+                }
+
+                if(end_row_index == -1 || end_col_index == -1)
+                {
+                    cerr << "Could not find end cell." << endl;
+                    return {};
+                }
+
+                try
+                {
+                    maze::graph::performAStar(grid_map, start_row_index, start_col_index, end_row_index, end_col_index, path);
+                    return path;
+                }
+                catch(const exception& e)
+                {
+                    cerr << e.what() << '\n';
+                    return {};
+                }
+            }
             return {};
         }
     }

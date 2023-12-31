@@ -42,7 +42,7 @@ int main(int argc, char** argv)
     }
     else
     {
-        int user_story_id = 4;
+        int user_story_id = 5;
         int col_index = -1;
         string map_file = "";
 
@@ -116,8 +116,18 @@ int main(int argc, char** argv)
                     break;
                 }
             case 5:
-                cout << "Not implemented yet." << endl;
-                break;
+                {
+                    auto path = grid.solveMaze();
+                    if(path.size() > 0)
+                    {
+                        printPath(path);
+                    }
+                    else
+                    {
+                        cout << "No path found or an error occured." << endl;
+                    }
+                    break;
+                }
             default:
                 break;
         }

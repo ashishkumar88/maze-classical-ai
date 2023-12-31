@@ -76,6 +76,11 @@ namespace maze
                 // that is part of the winding path in the maze.
                 std::vector<std::pair<int, int>> findWindingPath() const;
 
+                // solveMaze function that returns a vector of pairs
+                // of integers. Each pair represents a cell in the grid map
+                // that is part of the path from the start to the end of the maze.
+                std::vector<std::pair<int, int>> solveMaze() const;
+
             private:
                 std::vector<std::vector<int>> grid_map;
                 bool is_initialized;
@@ -102,6 +107,44 @@ namespace maze
         // that is part of the path. DFS is rejected if there are forks.
         // See assumption in the README.md file.
         void performSimpleDFS(std::vector<std::vector<int>> const& grid_map, const int& row_index, const int& col_index, std::vector<std::pair<int, int>>& path);
+
+        // Node class that represents a node in the A* algorithm
+        class Node
+        {
+            public:
+                Node(const int& row_index, const int& col_index);
+                ~Node();
+
+                // getters and setters
+                const int& getFScore() const;
+                const int& getGScore() const;
+                const int& getParentRowIndex() const;
+                const int& getParentColIndex() const;
+                const int& getRowIndex() const;
+                const int& getColIndex() const;
+
+                void setGScore(const int& g_score);
+                void setFScore(const int& f_score);
+                void setHScore(const int& h_score);
+                void setParentRowIndex(const int& parent_row_index);
+                void setParentColIndex(const int& parent_col_index);
+
+                // operator overloading for the < operator
+                // used for sorting the nodes in the priority queue
+                bool operator<(const Node& node) const;
+
+            private:
+                int row_index;
+                int col_index;
+                int g_score;
+                int f_score;
+                int h_score;
+                int parent_row_index;
+                int parent_col_index;
+        };
+        
+        // performAStar function that performs the A* algorithm
+        void performAStar(std::vector<std::vector<int>> const& grid_map, const int& start_row_index, const int& start_col_index, const int& end_row_index, const int& end_col_index, std::vector<std::pair<int, int>>& path);
     }
 }
 
