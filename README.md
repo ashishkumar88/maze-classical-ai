@@ -12,7 +12,8 @@ The technical challenge present various user stories that need to be solved. The
     - Assumptions - The Maze is either a 1D or a 2D maze. A *hallway* maze that contains either a single row hallway with empty spaces or a single column hallway with empty spaces. Provided maze contains only one hallway. The program does not work on multiple hallways.
 - User Story 3 - The requirement is to find a way into a rectangular room and a way out of it. The program find a path into this rectangular room and out of it by reusing the methods implemented for the previous use story. 
     - Assumptions - The Maze is a 2D maze. A *room* is a rectangular composition of cells which are empty and is atleast two cells wide. A room always has an empty cell or door outside of it and adjacent to the top left corner and another empty cell or door adjacent to a bottom right corner. The program assumses that maze has **only one** room. The program does not provide paths for multiple rooms.
-
+- User Story 4 - The requirement is to find a winding path if it exists in a maze. The program find a path into a winding path and out of it. This is solved by using a graph algorithm called depth first search or DFS. The program finds the start of the winding path and then follows it.
+    - Assumptions - The Maze is a 2D maze. A *winding path* does not contain forks, that is, a cell never creates two subpaths. The program assumses that maze has **only one** winding path and each path is exactly **one** cell wide. The program does not provide paths for multiple winding paths.
 ### Project Structure
 
 The project has the following structure:
@@ -196,8 +197,14 @@ Path Start -> (0, 3) -> (1, 3) -> (2, 3) -> (3, 3) -> (4, 3) -> (5, 3) -> End
 
 - User Story 3
 ```
-./build/bin/MazeSolver -m path/to/maze/file # or -u 3
+./build/bin/MazeSolver -m path/to/maze/file -u 3
 Path Start -> (0, 1) -> (1, 1) -> (2, 1) -> (2, 2) -> (2, 3) -> (2, 4) -> (3, 4) -> End
+```
+
+- User Story 4
+```
+./build/bin/MazeSolver -m path/to/maze/file # or -u 4
+Path Start -> (0, 1) -> (1, 1) -> (1, 2) -> (1, 3) -> (2, 3) -> (3, 3) -> (3, 2) -> (3, 1) -> (4, 1) -> (5, 1) -> (5, 2) -> (5, 3) -> (6, 3) -> End
 ```
 
 ### License

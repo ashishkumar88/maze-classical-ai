@@ -285,6 +285,41 @@ TEST(GridTest, RoomPath9)
     ASSERT_EQ(path.size(), 0);
 }
 
+// Test winding path following on map file with multiple rows and invalid winding path
+TEST(GridTest, WindingPath1)
+{
+    string map_file_path = "maps/invalid_winding_path_1.txt";
+    maze::grid::Grid grid(map_file_path);
+    auto path = grid.findWindingPath();
+    ASSERT_EQ(path.size(), 0);
+}
+
+// Test winding path following on map file with multiple rows and valid winding path
+TEST(GridTest, WindingPath2)
+{
+    string map_file_path = "maps/winding_path_maze_1.txt";
+    maze::grid::Grid grid(map_file_path);
+    auto path = grid.findWindingPath();
+    ASSERT_EQ(path.size(), 13);
+    ASSERT_EQ(path[0].first, 0);
+    ASSERT_EQ(path[0].second, 1);
+    ASSERT_EQ(path[12].first, 6);
+    ASSERT_EQ(path[12].second, 3);
+}
+
+// Test winding path following on map file with multiple rows and valid winding path
+TEST(GridTest, WindingPath3)
+{
+    string map_file_path = "maps/winding_path_maze_2.txt";
+    maze::grid::Grid grid(map_file_path);
+    auto path = grid.findWindingPath();
+    ASSERT_EQ(path.size(), 42);
+    ASSERT_EQ(path[0].first, 5);
+    ASSERT_EQ(path[0].second, 0);
+    ASSERT_EQ(path[41].first, 2);
+    ASSERT_EQ(path[41].second, 22);
+}
+
 int main(int ac, char* av[]) {
     testing::InitGoogleTest(&ac, av);    
     return RUN_ALL_TESTS();

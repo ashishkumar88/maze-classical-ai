@@ -42,7 +42,7 @@ int main(int argc, char** argv)
     }
     else
     {
-        int user_story_id = 3;
+        int user_story_id = 4;
         int col_index = -1;
         string map_file = "";
 
@@ -102,10 +102,19 @@ int main(int argc, char** argv)
                     }
                     break;
                 }
-                break;
             case 4:
-                cout << "Not implemented yet." << endl;
-                break;
+                {
+                    auto path = grid.findWindingPath();
+                    if(path.size() > 0)
+                    {
+                        printPath(path);
+                    }
+                    else
+                    {
+                        cout << "No path found or an error occured." << endl;
+                    }
+                    break;
+                }
             case 5:
                 cout << "Not implemented yet." << endl;
                 break;

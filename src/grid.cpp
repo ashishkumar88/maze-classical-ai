@@ -107,6 +107,37 @@ namespace maze
             return Constants::INDEX_NOT_FOUND;
         }
 
+        int Grid::searchAColumnForEmptySpace(const int col_index) const
+        {
+            if(!is_initialized)
+            {
+                cerr << "Grid map is not initialized." << endl;
+                return Constants::INDEX_NOT_FOUND;
+            }
+            else if(grid_map.empty())
+            {
+                cerr << "Grid map is empty." << endl;
+                return Constants::INDEX_NOT_FOUND;
+            }
+            else if(col_index < 0 || col_index >= grid_map[0].size())
+            {
+                cerr << "Column index is out of bounds." << endl;
+                return Constants::INDEX_NOT_FOUND;
+            }
+            else
+            {
+                for(int row_index = 0; row_index < grid_map.size(); row_index++)
+                {
+                    if(grid_map[row_index][col_index] == 0)
+                    {
+                        return row_index;
+                    }
+                }
+            }
+
+            return Constants::INDEX_NOT_FOUND;
+        }
+
         vector<pair<int, int>> Grid::walkThrouhHallway() const
         {
             vector<pair<int, int>> hallway_cells;
@@ -114,12 +145,12 @@ namespace maze
             if(!is_initialized)
             {
                 cerr << "Grid map is not initialized." << endl;
-                return hallway_cells;
+                return {};
             }
             else if(grid_map.empty())
             {
                 cerr << "Grid map is empty." << endl;
-                return hallway_cells;
+                return {};
             }
             else
             {
@@ -193,12 +224,12 @@ namespace maze
             if(!is_initialized)
             {
                 cerr << "Grid map is not initialized." << endl;
-                return path;
+                return {};
             }
             else if(grid_map.empty())
             {
                 cerr << "Grid map is empty." << endl;
-                return path;
+                return {};
             }
             else
             {
@@ -310,6 +341,77 @@ namespace maze
             }
 
             return path; // TODO: Explore using graph search algorithms 
+        }
+
+        std::vector<std::pair<int, int>> Grid::findWindingPath() const
+        {
+            vector<pair<int, int>> path;
+
+            if(!is_initialized)
+            {
+                cerr << "Grid map is not initialized." << endl;
+                return {};
+            }
+            else if(grid_map.empty())
+            {
+                cerr << "Grid map is empty." << endl;
+                return {};
+            }
+            else
+            {
+                int number_rows = grid_map.size();
+                int number_cols = grid_map[0].size();
+
+                int row_itr = 0; 
+                int col_itr = 0;
+                
+                // search each row and column for empty space
+                // if found, perform DFS from that cell
+                // search begins from the 0th row and 0th column
+                while(row_itr < number_rows || col_itr < number_cols)
+                {   
+                    if(row_itr < number_rows)
+                    {
+                        int col_index = searchARowForEmptySpace(row_itr); 
+                        if(col_index != Constants::INDEX_NOT_FOUND)
+                        {   
+                            try
+                            {
+                                maze::graph::performSimpleDFS(grid_map, row_itr, col_index, path);  
+                                return path;
+                            }
+                            catch(const exception& e)
+                            {
+                                cerr << e.what() << '\n';
+                                return {};
+                            }
+                        }
+                        row_itr++;
+                    }
+                    
+                    if(col_itr < number_cols)
+                    {
+                        int row_index = searchAColumnForEmptySpace(col_itr);
+                        if(row_index != Constants::INDEX_NOT_FOUND)
+                        {
+                            try
+                            {
+                                maze::graph::performSimpleDFS(grid_map, row_index, col_itr, path);  
+                                return path;
+                            }
+                            catch(const exception& e)
+                            {
+                                cerr << e.what() << '\n';
+                                return {};
+                            }
+                        }
+                    }
+                }
+
+                return {};
+            }
+            
+            return {};
         }
     }
 }

@@ -54,7 +54,7 @@ namespace maze
                 void initializeGridMap(std::string const& map_file_path);
 
                 // searchARowForEmptySpace function that searches
-                // the first row of the grid map for empty space
+                // a row of the grid map for empty space
                 int searchARowForEmptySpace(const int row_index) const;
 
                 // isInitialized function that returns true if the grid map
@@ -71,6 +71,11 @@ namespace maze
                 // that is part of the path into and out of the room in the maze.
                 std::vector<std::pair<int, int>> findPathToAndOutOfRoom() const;
 
+                // findWindingPath function that returns a vector of pairs
+                // of integers. Each pair represents a cell in the grid map
+                // that is part of the winding path in the maze.
+                std::vector<std::pair<int, int>> findWindingPath() const;
+
             private:
                 std::vector<std::vector<int>> grid_map;
                 bool is_initialized;
@@ -82,7 +87,21 @@ namespace maze
                 // performRowWalk function that performs a row walk
                 // in a hallway, starting from the given row and column index
                 void performRowWalk(std::vector<std::pair<int, int>>& hallway_cells, const int& row_index, const int& col_index) const;
+
+                // searchAColumnForEmptySpace function that searches
+                // a column of the grid map for empty space
+                int searchAColumnForEmptySpace(const int col_index) const;
         };
+    }
+
+    namespace graph
+    {
+        // performSimpleDFS function that performs a simple DFS
+        // on the given grid map and returns a vector of pairs
+        // of integers. Each pair represents a cell in the grid map
+        // that is part of the path. DFS is rejected if there are forks.
+        // See assumption in the README.md file.
+        void performSimpleDFS(std::vector<std::vector<int>> const& grid_map, const int& row_index, const int& col_index, std::vector<std::pair<int, int>>& path);
     }
 }
 
