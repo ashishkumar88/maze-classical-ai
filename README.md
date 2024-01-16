@@ -1,6 +1,6 @@
 ## Maze Solver
 
-This project contains a C++ program developed as a part of the technical challenge for Path robotics. 
+This project contains a C++ program developed to solve maze tour using classical AI techniques
 
 ### Approach
 
